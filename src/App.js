@@ -22,12 +22,13 @@ function App() {
             </div>
             <div>
                 {
-                    data.map(item => (
+                    data.map((item, index) => (
                         <div style={{
                             border: '2px solid black', padding: '5px', margin: '10px',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
+                            position: 'relative'
                         }}>
                             <div style={{
                                 display: 'flex',
@@ -35,6 +36,13 @@ function App() {
                                 alignItems: 'flex-start',
                                 width: 'fit-content'
                             }}>
+                                <div style={{
+                                    position: 'absolute',
+                                    fontSize: '30px',
+                                    fontWeight: 600,
+                                    top: '50px',
+                                    left: '200px'
+                                }}>{(page - 1) * 20 + index + 1}</div>
                                 <div>ID: <b>{item.id}</b></div>
                                 <div>Name: <b>{item.name}</b></div>
                                 <div>Target: <b>{item.target}</b></div>

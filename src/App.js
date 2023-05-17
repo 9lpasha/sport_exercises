@@ -1,8 +1,20 @@
 import './App.css';
 import {useEffect, useState} from "react";
+import axios from "axios";
 
-const dataset = require('./assets/csvjson.json');
-console.log(dataset)
+let dataset = require('./assets/dataset_sorted.json');
+
+console.log(dataset.filter(item => item.bodyPart === 'cardio'))
+
+const gpt_func = (pycharm_line) => {
+    const num_s = pycharm_line + 1
+    const num_f = num_s + 100
+    const res = "Can you estimate the difficulty from 1 to 10 of sports exercises for average 20 years male and return the resulting dataset in csv format: " +
+        dataset.slice(num_s, num_f)
+}
+
+/*console.log("I need to assess the difficulty and energy consumption of sports exercises, let's say that the exercises are performed by 20-year-old young people of average build. Can you estimate the difficulty from 1 to 10 and energy from 1 to 10 of sports exercises and return the resulting dataset in csv format: " +
+    JSON.stringify(dataset.sort((a, b) => a < b ? 1 : -1).map(i => i.name)));*/
 
 function App() {
     const [page, setPage] = useState(1);
@@ -11,6 +23,18 @@ function App() {
     useEffect(() => {
         setData(dataset.slice((page - 1) * 20, page * 20));
     }, [page]);
+
+    useEffect(() => {
+        const instance = axios.create({
+            baseURL: 'http://185.225.35.213:3000/',
+            withCredentials: true,
+        });
+
+        instance.post('auth/in', {
+            email: '131313pasha@mail.ru',
+            password: '1234'
+        })
+    }, []);
 
     return (
         <div className="App">
@@ -48,6 +72,7 @@ function App() {
                                 <div>Target: <b>{item.target}</b></div>
                                 <div>Body part: <b>{item.bodyPart}</b></div>
                                 <div>Equipment: <b>{item.equipment}</b></div>
+                                <div>Difficulty: <b>{item.difficulty}</b></div>
                             </div>
                             <img src={item.gifUrl} alt=""/>
                         </div>
